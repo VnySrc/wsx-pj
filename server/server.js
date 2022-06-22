@@ -6,7 +6,8 @@ import http from "http"
 const app = express()
 const server = http.createServer(app)
 
-app.use(express.static(path.resolve("waxjs", "dist-web")))
+app.use(express.static("../dist-web"))
+
 
 app.use("/login" , async (req, res) => {
   

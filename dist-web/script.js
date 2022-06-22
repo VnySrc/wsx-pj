@@ -4,8 +4,8 @@ const signBtn = document.getElementById("sign").addEventListener("click", handle
 
 const wax = new waxjs.WaxJS({
     rpcEndpoint: 'https://wax.greymass.com',
-    userAccount: 'vinymaxterrr',
-   pubKeys: ["EOS55uLpgm5dmPCcBTUsBaSZtEzjpAXbEMqVbBHAmWnbVAepu4LtX", "EOS5fwbp68yH7Ldb2Bc64Ea8qSzEZK9nYa538skjoWzpHMGwXXzrs"]
+    //userAccount: 'vinymaxterrr',
+    //pubKeys: ["EOS55uLpgm5dmPCcBTUsBaSZtEzjpAXbEMqVbBHAmWnbVAepu4LtX", "EOS5fwbp68yH7Ldb2Bc64Ea8qSzEZK9nYa538skjoWzpHMGwXXzrs"]
 });
 
 autoLogin(); 
@@ -25,7 +25,12 @@ async function handleLogin() {
     try { 
         const userAccount = await wax.login(); 
         const pubKeys = wax.pubKeys;
+        if (!pubKeys) {
+          console.log("Falta Key")
+        }
+        else {
         console.log(pubKeys)
+        }
     } catch(e) { 
         document.getElementById('response').append(e.message);
     } 
@@ -38,23 +43,24 @@ async function handleSign() {
     const message = document.getElementById('message').value;
     const fail = document.getElementById('fail').checked;
 
+
+
     try {
       const result = await wax.api.transact({
         actions: [{
-            account: 'eosio',
-            name: 'delegatebw',
-            authorization: [{
-            actor: wax.userAccount,
-            permission: 'active',
-            }],
-            data: {
-            from: wax.userAccount,
-            receiver: wax.userAccount,
-            stake_net_quantity: '0.00000001 WAX',
-            stake_cpu_quantity: '0.00000000 WAX',
-            transfer: false,
-            memo: 'This is a WaxJS/Cloud Wallet Demo.'
-            },
+            account: "boost.wax",
+            authorization: [
+              {
+                actor: "cpusolutions",
+                pubKeys: ["PUB_K1_7BshxXx83pLBXwtrnKQ3nQo7Lhs2UraB5BdccdBwPLc9AukKSH", "PUB_K1_5EVmRVrCyCPyD9faZX4VQk4Cj6ga88hdir8KMaiGoGi4S6gU2n"],
+                permission: "active",
+              },
+            ],
+            data: null,
+            hex_data: "",
+            name: "noop"
+      
+      
         }]
         }, {
         blocksBehind: 3,
@@ -68,3 +74,4 @@ async function handleSign() {
       document.getElementById('response').append(e.message);
     }
   }
+  
